@@ -68,6 +68,29 @@ const utils = {
   verifySign: function (publicKey, buffer, signature) { //验证签名
     var pubkey = new NodeRSA(publicKey, 'pkcs8-public')
     return pubkey.verify(buffer, signature)
-  }
+  },
+  
+  /**
+   * 判断字符串是不是josn
+   * @param {*} str 
+   */
+  isJSON: function (str) {
+      if (typeof str == 'string') {
+        try {
+          var obj = JSON.parse(str);
+          if (typeof obj == 'object' && obj) {
+            return true
+          } else {
+            return false
+          }
+        } catch (e) {
+          console.log('err:' + str + '~~~' + e)
+          return false
+        }
+      }
+      return false
+    }
 }
+
+
 module.exports = utils

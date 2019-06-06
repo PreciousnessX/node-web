@@ -28,20 +28,22 @@ app.get('*', function (req, res) {
 app.listen(8088);
 console.log('success listen…………');
 
+
+
+
 /**
  * 验证连接redis
  */
 
-var redisCli = redis.createClient(6379, 'localhost');
-redisCli.set('hello', 'this is my value!')
-redisCli.expire('hello',5) //设置5s后过期
-// 获取值
-setTimeout(function () { 
-  redisCli.get('hello', function (err, v) {
-    console.log("redis get hello err,v:", err, v) // 6s后获取的值为空
-  })
-},6000)
-
+// var redisCli = redis.createClient(6379, 'localhost');
+// redisCli.set('hello', 'this is my value!')
+// redisCli.expire('hello',5) //设置5s后过期
+// // 获取值
+// setTimeout(function () { 
+//   redisCli.get('hello', function (err, v) {
+//     console.log("redis get hello err,v:", err, v) // 6s后获取的值为空
+//   })
+// },6000)
 
 
 /**
