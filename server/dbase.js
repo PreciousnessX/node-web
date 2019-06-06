@@ -12,7 +12,6 @@ const _Mongo = function () {
       useNewUrlParser: true
     }, function (err, db) {
       if (err) throw err;
-      console.log("建立连接...")
       let dbase = db.db("nodeServer")
       let col = dbase.collection('app')
       _this[ds](col, data, bc, db)

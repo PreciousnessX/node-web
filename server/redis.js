@@ -20,31 +20,34 @@ function _connect() {
  * 
  * @param {String} key 
  * @param {*} value 
+ * @param {Number} dur  字段的有效期
  */
-function setStr(key,value) { 
+function setStr(key,value,dur) { 
     var client = _connect()
     if (typeof value == 'object') { 
-       var val = JSON.stringify(value) 
+       var value = JSON.stringify(value)
     }
-    client.set(key, val)
-    client.expire(key,DURATION)
+    client.set(key, value)
+    client.expire(key, dur)
 }
 
 /**
  * 
  * @param {String} key 
+ * @param {Function} cb 
  */
-function getStr(key) { 
+function getStr(key,cb) { 
     var client = _connect()
     var value
-    client.get(key, function (err,v) { 
+    client.get(key, function (err, v) { 
         if (err) throw err
         value = v
+        if (utils.isJSON(value)) {
+          value = JSON.parse(value)
+        }
+        cb(value)
     })
-    if (utils.isJSON(value)) { 
-        val = JSON.parsevalue
-    }
-    return val
+    
 }
 
 // list操作

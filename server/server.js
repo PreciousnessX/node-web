@@ -10,7 +10,9 @@ const bodyParser = require('body-parser')
 const express = require('express');
 const app = express();
 const utils = require('./utils')
+const redisdb = require('./redis')
 const redis = require('redis')
+const mongo = require('./dbase')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -28,6 +30,22 @@ app.get('*', function (req, res) {
 app.listen(8088);
 console.log('success listen…………');
 
+/**
+ * 验证dbase是否可用
+ */
+// mongo.mongoBase('find', { 'name': 'test@test.com', 'passWord': '123456' }, function (err,res) { 
+//   console.log(res)
+// })
+
+
+/**
+ * 测试redisdb是否可用
+ */
+
+// redisdb.setStr('nihao', '123', 300)
+// redisdb.getStr('adfsd454', function (val) { 
+//   console.log(val)
+// })
 
 
 
@@ -36,14 +54,15 @@ console.log('success listen…………');
  */
 
 // var redisCli = redis.createClient(6379, 'localhost');
+// redisCli.auth('bobomusic.com7')
 // redisCli.set('hello', 'this is my value!')
-// redisCli.expire('hello',5) //设置5s后过期
+// redisCli.expire('hello',300) //设置5s后过期
 // // 获取值
 // setTimeout(function () { 
 //   redisCli.get('hello', function (err, v) {
 //     console.log("redis get hello err,v:", err, v) // 6s后获取的值为空
 //   })
-// },6000)
+// },1000)
 
 
 /**

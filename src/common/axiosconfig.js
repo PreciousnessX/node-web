@@ -17,7 +17,7 @@ Vue.prototype.$static = ''
 // 配置接口地址
 axios.defaults.baseURL = '/api/'
 var loadingInstance
-// POST传参序列化(添加请求拦截器)
+// get传参序列化(添加请求拦截器) // get请求时才需要参数序列化
 axios.interceptors.request.use(
   config => {
     loadingInstance = Loading.service({
@@ -26,7 +26,7 @@ axios.interceptors.request.use(
       spinner: 'el-icon-loading',
       background: 'rgba(0, 0, 0, 0.7)'
     })
-    if (config.method === 'post') {
+    if (config.method === 'get') {
       config.data = qs.stringify(config.data)
     }
     return config
@@ -66,10 +66,10 @@ export function fetchPost(url, params) {
       .post(url, params)
       .then(
         res => {
-          resolve(res)
+          resolve(res.data)
         },
         err => {
-          reject(err)
+          reject(err.data)
         }
       )
       .catch(err => {

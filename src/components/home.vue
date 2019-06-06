@@ -9,10 +9,11 @@
           <el-input v-model="form.passWord"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="tologin">{{ login?'登录':'注册'}}</el-button>
+          <el-button type="primary" @click="islogin?login():regist()">{{ islogin?'登录':'注册'}}</el-button>
           <el-button>取消</el-button>
         </el-form-item>
-        <a @click = 'login = !login'>如果您没有账户,点击此处注册。</a>
+        <a @click="islogin = !islogin" class="link">如果您没有账户,点击此处注册。</a>
+        <div>{{islogin}}</div>
       </el-form>
     </div>
   </div>
@@ -27,29 +28,44 @@ export default {
     return {
       form: {
         name: "",
-       passWord:""
+        passWord: ""
       },
-      login:true
+      islogin: true
     };
   },
   watch: {},
   computed: {},
   methods: {
-    toregist() {
-      console.log(123)
-     this.$post('login/createAccount',this.form).then(res => {
-         console.log(res)
-     }).catch(err => {
-         console.log(err)
-     })
+    regist() {
+      let that = this;
+      console.log({'account':this.form})
+      this.$post("login/createAccount", { 'account': that.form })
+        .then(data => {
+          console.log(data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    tologin(){
-      this.$post('login/getAccount',this.form).then(res => {
-         console.log(res)
-     }).catch(err => {
-         console.log(err)
-     })
-    }
+    login() {
+      const that = this;
+      that.$post('/getkey').then(function(data){
+       const {key,pubkey} = data
+       // 加密
+       let account = that.$utils.enRSA(pubkey,that.form)
+       // 生成密钥对
+       const RSAkeys = that.$utils.creatRSA()
+       // 将公钥存在localstorage中
+       localStorage.setItem('prikey',RSAkeys.prikey)
+       that.$post("login/getAccount", { key:key,account: account,pubkey: RSAkeys.pubkey})
+        .then(data => {
+          console.log(data);
+        })
+        .catch(err => {
+          console.log(data);
+        });
+        })
+      }
   },
   created() {},
   mounted() {}
@@ -73,5 +89,9 @@ export default {
   margin: auto;
   background-color: #fff;
   padding: 50px 10px;
+}
+.link {
+  color: #5b99fd;
+  cursor: pointer;
 }
 </style>

@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
+import utils from './common/util'
 import 'element-ui/lib/theme-chalk/index.css'
 import {
   fetchGet,
@@ -11,6 +12,7 @@ import {
 } from './common/axiosconfig'
 Vue.prototype.$get = fetchGet
 Vue.prototype.$post = fetchPost
+Vue.prototype.$utils = utils
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
